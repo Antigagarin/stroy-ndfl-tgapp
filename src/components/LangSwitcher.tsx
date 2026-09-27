@@ -1,29 +1,66 @@
-import { useLang } from "../i18n"
+import { useState } from "react"
+import { useLang, t } from "../i18n"
 
 const LANGS = [
-  { code: "ru", label: "RU" },
-  { code: "uz", label: "UZ" },
-  { code: "tg", label: "TG" },
-  { code: "az", label: "AZ" },
+  { code: "ru", native: "Русский" },
+  { code: "uz", native: "O'zbek tili" },
+  { code: "tg", native: "Тоҷикӣ" },
+  { code: "az", native: "Azərbaycan dili" },
+  { code: "kz", native: "Қазақша" },
+  { code: "kg", native: "Кыргызча" },
 ]
 
 export function LangSwitcher() {
   const [lang, setLang] = useLang()
+  const [open, setOpen] = useState(false)
+
   return (
-    <div className="flex gap-1">
-      {LANGS.map(l => (
-        <button
-          key={l.code}
-          onClick={() => setLang(l.code)}
-          className={`px-2 py-0.5 text-xs font-bold border ${
-            lang === l.code
-              ? "bg-black text-white border-black"
-              : "bg-white text-black border-gray-300"
-          }`}
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        style={{ backgroundColor: "#ffffff", color: "#000000", border: "2px solid #000000", padding: "2px 10px", fontSize: "11px", fontWeight: 900 }}
+      >
+        {lang.toUpperCase()}
+      </button>
+
+      {open && (
+        <div
+          className="fixed inset-0 z-50 flex items-end"
+          style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
+          onClick={() => setOpen(false)}
         >
-          {l.label}
-        </button>
-      ))}
-    </div>
+          <div
+            className="w-full"
+            style={{ backgroundColor: "#ffffff" }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div style={{ borderBottom: "2px solid #000000", padding: "12px 16px" }}>
+              <div style={{ color: "#000000", fontSize: "13px", fontWeight: 900, textTransform: "uppercase" }}>
+                {t("choose_language", lang)}
+              </div>
+            </div>
+            {LANGS.map(l => (
+              <div
+                key={l.code}
+                onClick={() => { setLang(l.code); setOpen(false) }}
+                style={{
+                  borderBottom: "1px solid #e5e7eb",
+                  padding: "14px 16px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  cursor: "pointer",
+                  backgroundColor: lang === l.code ? "#000000" : "#ffffff",
+                  color: lang === l.code ? "#ffffff" : "#000000",
+                }}
+              >
+                <span style={{ fontWeight: 700, fontSize: "16px" }}>{l.native}</span>
+                <span style={{ fontWeight: 900, fontSize: "11px", opacity: 0.5 }}>{l.code.toUpperCase()}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   )
 }
