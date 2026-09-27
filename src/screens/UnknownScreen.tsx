@@ -10,13 +10,13 @@ export function UnknownScreen({ onRegister }: Props) {
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#f3f4f6" }}>
       <div style={{ backgroundColor: "#000", color: "#fff", padding: "32px 24px 24px" }}>
-        <div style={{ fontSize: "11px", fontWeight: 900, letterSpacing: "0.15em", opacity: 0.6, marginBottom: "8px" }}>
+        <div style={{ fontSize: "11px", fontWeight: 900, letterSpacing: "0.2em", color: "#aaa", marginBottom: "10px" }}>
           {T("app_name")}
         </div>
-        <div style={{ fontSize: "26px", fontWeight: 900, lineHeight: 1.1, textTransform: "uppercase" }}>
+        <div style={{ fontSize: "28px", fontWeight: 900, lineHeight: 1.1, textTransform: "uppercase" }}>
           {T("welcome")}
         </div>
-        <div style={{ fontSize: "14px", color: "#ccc", marginTop: "8px" }}>
+        <div style={{ fontSize: "14px", color: "#fff", marginTop: "10px", lineHeight: 1.5, opacity: 0.85 }}>
           {T("not_registered")}
         </div>
       </div>
