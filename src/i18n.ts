@@ -46,6 +46,10 @@ const translations: Record<string, Record<string, string>> = {
     required: "обязательно",
     optional: "необязательно",
     choose_language: "Выберите язык",
+    app_name: "ПРОХОДНАЯ",
+    step_1: "Зарегистрируйся один раз — ФИО и организация",
+    step_2: "Каждый день отмечай явку одной кнопкой",
+    step_3: "Прораб и бухгалтер видят всё автоматически",
   },
   uz: {
     register_title: "Ishchini ro'yxatdan o'tkazish",
@@ -90,6 +94,10 @@ const translations: Record<string, Record<string, string>> = {
     required: "majburiy",
     optional: "ixtiyoriy",
     choose_language: "Tilni tanlang",
+    app_name: "ПРОХОДНАЯ",
+    step_1: "Bir marta ro'yxatdan o'ting — ism va tashkilot",
+    step_2: "Har kuni bir tugma bilan davomat belgilang",
+    step_3: "Usta va buxgalter hamma narsani avtomatik ko'radi",
   },
   tg: {
     register_title: "Сабти номи корга",
@@ -134,6 +142,10 @@ const translations: Record<string, Record<string, string>> = {
     required: "ҳатмӣ",
     optional: "ихтиёрӣ",
     choose_language: "Забонро интихоб кунед",
+    app_name: "ПРОХОДНАЯ",
+    step_1: "Як маротиба сабти ном кунед — ном ва ташкилот",
+    step_2: "Ҳар рӯз бо як тугма ҳозириро қайд кунед",
+    step_3: "Сармутахассис ва ҳисобдор ҳамаро мебинанд",
   },
   kz: {
     register_title: "Жұмысшыны тіркеу",
@@ -178,6 +190,10 @@ const translations: Record<string, Record<string, string>> = {
     required: "міндетті",
     optional: "міндетті емес",
     choose_language: "Тілді таңдаңыз",
+    app_name: "ПРОХОДНАЯ",
+    step_1: "Бір рет тіркеліңіз — аты-жөні және ұйым",
+    step_2: "Күн сайын бір түймемен келуді белгілеңіз",
+    step_3: "Прораб пен бухгалтер бәрін автоматты көреді",
   },
   kg: {
     register_title: "Жумушчуну каттоо",
@@ -222,6 +238,10 @@ const translations: Record<string, Record<string, string>> = {
     required: "милдеттүү",
     optional: "милдеттүү эмес",
     choose_language: "Тилди тандаңыз",
+    app_name: "ПРОХОДНАЯ",
+    step_1: "Бир жолу катталыңыз — аты-жөнү жана уюм",
+    step_2: "Күн сайын бир баскыч менен келүүнү белгилеңиз",
+    step_3: "Прораб жана бухгалтер баарын автоматтык көрөт",
   },
   az: {
     register_title: "İşçinin qeydiyyatı",
@@ -266,6 +286,10 @@ const translations: Record<string, Record<string, string>> = {
     required: "məcburi",
     optional: "ixtiyari",
     choose_language: "Dil seçin",
+    app_name: "ПРОХОДНАЯ",
+    step_1: "Bir dəfə qeydiyyatdan keçin — ad və təşkilat",
+    step_2: "Hər gün bir düymə ilə davamiyyəti qeyd edin",
+    step_3: "Ustad və mühasib hər şeyi avtomatik görür",
   },
 }
 

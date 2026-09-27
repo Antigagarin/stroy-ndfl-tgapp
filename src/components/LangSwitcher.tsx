@@ -18,9 +18,10 @@ export function LangSwitcher() {
     <>
       <button
         onClick={() => setOpen(true)}
-        style={{ backgroundColor: "#ffffff", color: "#000000", border: "2px solid #000000", padding: "2px 10px", fontSize: "11px", fontWeight: 900 }}
+        style={{ backgroundColor: "#ffffff", color: "#000000", border: "2px solid #000000", padding: "4px 10px", display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}
       >
-        {lang.toUpperCase()}
+        <span style={{ fontSize: "11px", fontWeight: 900 }}>{lang.toUpperCase()}</span>
+        <span style={{ fontSize: "9px", fontWeight: 700, opacity: 0.5 }}>{t("choose_language", lang)}</span>
       </button>
 
       {open && (
