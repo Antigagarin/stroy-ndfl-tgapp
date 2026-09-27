@@ -21,7 +21,7 @@ export function LangSwitcher() {
         style={{ backgroundColor: "#ffffff", color: "#000000", border: "2px solid #000000", padding: "4px 10px", display: "flex", flexDirection: "column", alignItems: "center", gap: "1px" }}
       >
         <span style={{ fontSize: "11px", fontWeight: 900 }}>{lang.toUpperCase()}</span>
-        <span style={{ fontSize: "9px", fontWeight: 700, opacity: 0.5 }}>{t("choose_language", lang)}</span>
+        <span style={{ fontSize: "9px", fontWeight: 700, opacity: 0.5 }}>Use your language</span>
       </button>
 
       {open && (
