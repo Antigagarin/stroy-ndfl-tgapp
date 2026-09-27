@@ -8,6 +8,7 @@ import { WorkerCheckinScreen } from "./screens/WorkerCheckinScreen"
 import { ForemanScreen } from "./screens/ForemanScreen"
 import { GateScreen } from "./screens/GateScreen"
 import { ControllerScreen } from "./screens/ControllerScreen"
+import { LangSwitcher } from "./components/LangSwitcher"
 
 export default function App() {
   const [loading, setLoading] = useState(true)
@@ -35,5 +36,10 @@ export default function App() {
     return <UnknownScreen onRegister={() => setShowRegister(true)} />
   }
 
-  return <div className="min-h-screen">{renderScreen()}</div>
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <div className="fixed top-0 right-0 z-50 p-2"><LangSwitcher /></div>
+      {renderScreen()}
+    </div>
+  )
 }
