@@ -165,7 +165,15 @@ export function ForemanScreen({ auth: _auth }: Props) {
             <label key={w.id} className="flex items-center px-4 py-3 border-b last:border-0 gap-3 cursor-pointer">
               <input type="checkbox" checked={selectedIds.has(w.id)} onChange={() => toggleWorker(w.id)}
                 className="w-5 h-5 rounded" />
-              <span className="flex-1 text-sm">{w.fullName}</span>
+              <span className="flex-1 text-sm">
+                {w.fullName}
+                {w.patentWarning === "EXPIRED" && (
+                  <span className="ml-2 px-1 bg-black text-white text-xs font-black uppercase">ПАТЕНТ ПРОСРОЧЕН</span>
+                )}
+                {w.patentWarning === "EXPIRING_SOON" && (
+                  <span className="ml-2 px-1 bg-yellow-400 text-black text-xs font-black uppercase">ПАТЕНТ СКОРО</span>
+                )}
+              </span>
               {w.status !== "APPROVED" && (
                 <span className="text-xs text-orange-500">ожидает</span>
               )}

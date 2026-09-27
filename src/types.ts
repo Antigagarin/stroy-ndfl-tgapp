@@ -30,6 +30,7 @@ export interface WorkerInfo {
   fullName: string
   status: WorkerStatus
   organizationId: string
+  patentWarning?: "EXPIRED" | "EXPIRING_SOON" | null
 }
 
 export interface GateLogEntry {

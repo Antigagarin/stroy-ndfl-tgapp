@@ -14,6 +14,7 @@ export function GateScreen({ auth: _auth }: Props) {
   const [logsLoading, setLogsLoading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState("")
+  const [warning, setWarning] = useState("")
 
   useEffect(() => {
     apiGet<{ sites: SiteInfo[] }>("/api/tgapp/foreman")
@@ -49,8 +50,12 @@ export function GateScreen({ auth: _auth }: Props) {
     if (!selectedSite || !selectedWorkerId) return
     setSubmitting(true)
     setError("")
+    setWarning("")
     try {
-      await apiPost("/api/tgapp/gate", { siteId: selectedSite.id, workerId: selectedWorkerId, direction })
+      const result = await apiPost<{ warning?: string }>("/api/tgapp/gate", { siteId: selectedSite.id, workerId: selectedWorkerId, direction })
+      if (result.warning) {
+        setWarning(result.warning)
+      }
       setSelectedWorkerId("")
       const logsData = await apiGet<{ logs: GateLogEntry[] }>("/api/tgapp/gate", { siteId: selectedSite.id })
       setLogs(logsData.logs)
@@ -120,7 +125,16 @@ export function GateScreen({ auth: _auth }: Props) {
         </div>
       </div>
 
-      {error && <div className="mx-4 mt-3 px-4 py-3 bg-red-50 text-red-600 text-sm rounded-xl">{error}</div>}
+      {warning && (
+        <div className="mx-4 mt-3 px-3 py-3 bg-yellow-400 text-black text-sm font-bold border-2 border-black">
+          {warning}
+        </div>
+      )}
+      {error && (
+        <div className="mx-4 mt-3 px-3 py-3 bg-black text-white text-sm font-bold">
+          {error}
+        </div>
+      )}
 
       <div className="mx-4 mt-4">
         <h2 className="text-sm font-medium text-gray-500 mb-2">Журнал сегодня</h2>
