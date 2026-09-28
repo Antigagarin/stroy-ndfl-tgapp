@@ -1,6 +1,6 @@
 export type WorkerStatus = "PENDING" | "APPROVED" | "BLOCKED"
 export type GateDirection = "IN" | "OUT"
-export type UserRole = "ADMIN" | "FOREMAN" | "CONTRACTOR" | "GATE_OFFICER" | "CONTROLLER"
+export type UserRole = "SUPER_ADMIN" | "ADMIN" | "FOREMAN" | "CONTRACTOR" | "GATE_OFFICER" | "CONTROLLER"
 
 export interface AuthResult {
   role: "worker" | UserRole | "unknown"
@@ -8,6 +8,7 @@ export interface AuthResult {
   fullName?: string
   status?: WorkerStatus
   siteId?: string
+  todayAttendance?: { checkIn: string | null; checkOut: string | null; hours: number } | null
 }
 
 export interface Organization {
