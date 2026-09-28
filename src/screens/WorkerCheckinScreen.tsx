@@ -85,7 +85,7 @@ export function WorkerCheckinScreen({ auth }: Props) {
           <>
             <div style={{ textAlign: "center", borderBottom: "2px solid #000", paddingBottom: "24px", width: "100%" }}>
               <div style={{ fontSize: "13px", color: "#666", lineHeight: 1.6 }}>
-                Наведите камеру на QR-код<br />на входе в объект
+                {T("scan_qr_hint")}
               </div>
             </div>
 
@@ -105,7 +105,7 @@ export function WorkerCheckinScreen({ auth }: Props) {
                 cursor: loading ? "not-allowed" : "pointer",
               }}
             >
-              {loading ? "Отметка..." : "Сканировать QR-код"}
+              {loading ? T("checking_in") : T("scan_qr_btn")}
             </button>
           </>
         )}

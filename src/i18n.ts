@@ -50,6 +50,8 @@ const translations: Record<string, Record<string, string>> = {
     step_1: "Зарегистрируйся один раз — ФИО и организация",
     step_2: "Каждый день отмечай явку одной кнопкой",
     step_3: "Прораб и бухгалтер видят всё автоматически",
+    scan_qr_btn: "Сканировать QR-код",
+    scan_qr_hint: "Наведите камеру на QR-код на входе в объект",
   },
   uz: {
     register_title: "Ishchini ro'yxatdan o'tkazish",
@@ -98,6 +100,8 @@ const translations: Record<string, Record<string, string>> = {
     step_1: "Bir marta ro'yxatdan o'ting — ism va tashkilot",
     step_2: "Har kuni bir tugma bilan davomat belgilang",
     step_3: "Usta va buxgalter hamma narsani avtomatik ko'radi",
+    scan_qr_btn: "QR-kodni skanerlash",
+    scan_qr_hint: "Kamerani obyektga kirish joyidagi QR-kodga yo'naltiring",
   },
   tg: {
     register_title: "Сабти номи корга",
@@ -146,6 +150,8 @@ const translations: Record<string, Record<string, string>> = {
     step_1: "Як маротиба сабти ном кунед — ном ва ташкилот",
     step_2: "Ҳар рӯз бо як тугма ҳозириро қайд кунед",
     step_3: "Сармутахассис ва ҳисобдор ҳамаро мебинанд",
+    scan_qr_btn: "Сканери QR-код",
+    scan_qr_hint: "Камераро ба QR-коди даромадгоҳи объект нишон диҳед",
   },
   kz: {
     register_title: "Жұмысшыны тіркеу",
@@ -194,6 +200,8 @@ const translations: Record<string, Record<string, string>> = {
     step_1: "Бір рет тіркеліңіз — аты-жөні және ұйым",
     step_2: "Күн сайын бір түймемен келуді белгілеңіз",
     step_3: "Прораб пен бухгалтер бәрін автоматты көреді",
+    scan_qr_btn: "QR-кодты сканерлеу",
+    scan_qr_hint: "Камераны объектіге кіру жеріндегі QR-кодқа бағыттаңыз",
   },
   kg: {
     register_title: "Жумушчуну каттоо",
@@ -242,6 +250,8 @@ const translations: Record<string, Record<string, string>> = {
     step_1: "Бир жолу катталыңыз — аты-жөнү жана уюм",
     step_2: "Күн сайын бир баскыч менен келүүнү белгилеңиз",
     step_3: "Прораб жана бухгалтер баарын автоматтык көрөт",
+    scan_qr_btn: "QR-кодду сканерлөө",
+    scan_qr_hint: "Камераны объектке кирүү жеринде QR-кодуна багыттаңыз",
   },
   az: {
     register_title: "İşçinin qeydiyyatı",
@@ -290,6 +300,8 @@ const translations: Record<string, Record<string, string>> = {
     step_1: "Bir dəfə qeydiyyatdan keçin — ad və təşkilat",
     step_2: "Hər gün bir düymə ilə davamiyyəti qeyd edin",
     step_3: "Ustad və mühasib hər şeyi avtomatik görür",
+    scan_qr_btn: "QR-kodu skan et",
+    scan_qr_hint: "Kameranı obyektin girişindəki QR-koduna yönəlt",
   },
 }
 
