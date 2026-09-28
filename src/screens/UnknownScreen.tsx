@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useT } from "../i18n"
 
 interface Props {
@@ -6,6 +7,7 @@ interface Props {
 
 export function UnknownScreen({ onRegister }: Props) {
   const T = useT()
+  const [showForemanMsg, setShowForemanMsg] = useState(false)
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#f3f4f6" }}>
@@ -42,10 +44,16 @@ export function UnknownScreen({ onRegister }: Props) {
           {T("register_as_worker")}
         </button>
         <button
+          onClick={() => setShowForemanMsg(true)}
           style={{ width: "100%", padding: "14px", backgroundColor: "#fff", color: "#000", fontWeight: 700, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.06em", border: "2px solid #000", cursor: "pointer" }}
         >
           {T("i_am_foreman")}
         </button>
+        {showForemanMsg && (
+          <div style={{ padding: "14px 16px", border: "2px solid #000", backgroundColor: "#fff", fontSize: "13px", fontWeight: 500, lineHeight: 1.5 }}>
+            {T("foreman_contact_admin")}
+          </div>
+        )}
       </div>
     </div>
   )
