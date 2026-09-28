@@ -65,7 +65,7 @@ export function ProfileScreen({ auth: _auth, onBack, apiPrefix }: { auth: AuthRe
   const S = {
     root: { minHeight: "100vh", backgroundColor: "#f3f4f6", paddingBottom: "32px" },
     header: { backgroundColor: "#000", color: "#fff", padding: "32px 24px 20px" },
-    back: { fontSize: "12px", fontWeight: 700, color: "#aaa", background: "none", border: "none", cursor: "pointer", padding: 0, marginBottom: "10px", display: "block" } as React.CSSProperties,
+    back: { fontSize: "12px", fontWeight: 700, color: "#aaa", background: "none", border: "none", cursor: "pointer", padding: "8px 0", marginBottom: "4px", display: "block", minHeight: "44px", display: "flex", alignItems: "center" } as React.CSSProperties,
     label: { fontSize: "11px", fontWeight: 900, letterSpacing: "0.2em", color: "#aaa", marginBottom: "8px" },
     title: { fontSize: "22px", fontWeight: 900, textTransform: "uppercase" as const },
     card: { backgroundColor: "#fff", margin: "16px", border: "2px solid #000" },

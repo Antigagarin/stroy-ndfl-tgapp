@@ -27,7 +27,7 @@ export function AttendanceHistoryScreen({ auth: _auth, onBack, apiPrefix }: { au
   const S = {
     root: { minHeight: "100vh", backgroundColor: "#f3f4f6", paddingBottom: "32px" },
     header: { backgroundColor: "#000", color: "#fff", padding: "32px 24px 20px" },
-    back: { fontSize: "12px", fontWeight: 700, color: "#aaa", background: "none", border: "none", cursor: "pointer", padding: 0, marginBottom: "10px", display: "block" } as React.CSSProperties,
+    back: { fontSize: "12px", fontWeight: 700, color: "#aaa", background: "none", border: "none", cursor: "pointer", padding: "8px 0", marginBottom: "4px", display: "flex", alignItems: "center", minHeight: "44px" } as React.CSSProperties,
     label: { fontSize: "11px", fontWeight: 900, letterSpacing: "0.2em", color: "#aaa", marginBottom: "8px" },
     title: { fontSize: "22px", fontWeight: 900, textTransform: "uppercase" as const },
     stats: { display: "flex", gap: "24px", marginTop: "12px" },
