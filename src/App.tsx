@@ -30,13 +30,13 @@ export default function App() {
     if (loading || !auth) return <LoadingScreen />
     if (screen === "profile" && auth.role === "worker") return <ProfileScreen auth={auth} onBack={() => setScreen("main")} apiPrefix="/api/tgapp" />
     if (screen === "history" && auth.role === "worker") return <AttendanceHistoryScreen auth={auth} onBack={() => setScreen("main")} apiPrefix="/api/tgapp" />
-    if (auth.role === "unknown" && !showRegister) return <UnknownScreen onRegister={() => setShowRegister(true)} />
+    if (auth.role === "unknown" && !showRegister) return <UnknownScreen onRegister={() => setShowRegister(true)} onConnect={a => { setAuth(a); setShowRegister(false) }} />
     if (auth.role === "unknown" || showRegister) return <WorkerRegisterScreen onRegistered={a => { setAuth(a); setShowRegister(false) }} />
     if (auth.role === "worker") return <WorkerCheckinScreen auth={auth} onProfile={() => setScreen("profile")} onHistory={() => setScreen("history")} />
     if (["FOREMAN", "ADMIN", "SUPER_ADMIN"].includes(auth.role)) return <ForemanScreen auth={auth} />
     if (auth.role === "GATE_OFFICER") return <GateScreen auth={auth} />
     if (auth.role === "CONTROLLER") return <ControllerScreen auth={auth} />
-    return <UnknownScreen onRegister={() => setShowRegister(true)} />
+    return <UnknownScreen onRegister={() => setShowRegister(true)} onConnect={a => { setAuth(a) }} />
   }
 
   return (
