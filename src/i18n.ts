@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useContext, createContext, createElement } from "react"
 
 const STORAGE_KEY = "lang"
 
@@ -306,13 +306,20 @@ export function t(key: string, lang?: string): string {
   return translations[l]?.[key] ?? translations.ru[key] ?? key
 }
 
-export function useLang(): [string, (lang: string) => void] {
+type LangCtx = [string, (lang: string) => void]
+const LangContext = createContext<LangCtx>(["ru", () => {}])
+
+export function LangProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<string>(() => getLang())
   const changeLang = (newLang: string) => {
     setLang(newLang)
     setLangState(newLang)
   }
-  return [lang, changeLang]
+  return createElement(LangContext.Provider, { value: [lang, changeLang] }, children)
+}
+
+export function useLang(): [string, (lang: string) => void] {
+  return useContext(LangContext)
 }
 
 export function useT(): (key: string) => string {
