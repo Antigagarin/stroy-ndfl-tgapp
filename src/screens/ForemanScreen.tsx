@@ -243,6 +243,9 @@ export function ForemanScreen({ auth: _auth }: Props) {
   )
 
   // Level 2: Workers list
+  const expiredCount = workers.filter(w => w.patentWarning === "EXPIRED").length
+  const expiringSoonCount = workers.filter(w => w.patentWarning === "EXPIRING_SOON").length
+
   return (
     <div style={{ ...S.root, paddingBottom: "90px" }}>
       <div style={S.header}>
@@ -250,6 +253,17 @@ export function ForemanScreen({ auth: _auth }: Props) {
         <div style={S.headerLabel}>ПРОХОДНАЯ</div>
         <div style={S.headerTitle}>{selectedSite.name}</div>
       </div>
+
+      {expiredCount > 0 && (
+        <div style={{ margin: "12px 16px 0", padding: "12px 16px", backgroundColor: "#000", color: "#fff", fontSize: "13px", fontWeight: 900, textTransform: "uppercase" as const }}>
+          ⚠ Патент просрочен: {expiredCount} чел.
+        </div>
+      )}
+      {expiringSoonCount > 0 && (
+        <div style={{ margin: expiredCount > 0 ? "4px 16px 0" : "12px 16px 0", padding: "12px 16px", backgroundColor: "#facc15", color: "#000", fontSize: "13px", fontWeight: 900, textTransform: "uppercase" as const }}>
+          ⚠ Патент истекает: {expiringSoonCount} чел.
+        </div>
+      )}
 
       <div style={{ margin: "12px 16px", backgroundColor: "#fff", border: "2px solid #000" }}>
         <div style={{ display: "flex", borderBottom: "1px solid #e5e7eb" }}>
