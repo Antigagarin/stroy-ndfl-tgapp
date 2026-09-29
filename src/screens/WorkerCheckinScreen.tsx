@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { apiPost } from "../api"
+import { apiPost, apiPostForm } from "../api"
 import type { AuthResult } from "../types"
 import { useT } from "../i18n"
 
@@ -13,6 +13,9 @@ export function WorkerCheckinScreen({ auth, onProfile, onHistory }: { auth: Auth
   const [elapsed, setElapsed] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null)
+  const [photoLoading, setPhotoLoading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const today = new Date().toLocaleDateString("ru-RU", { day: "numeric", month: "long" })
@@ -73,6 +76,20 @@ export function WorkerCheckinScreen({ auth, onProfile, onHistory }: { auth: Auth
     }
   }
 
+  async function handlePhotoUpload(file: File) {
+    setPhotoLoading(true)
+    try {
+      const form = new FormData()
+      form.append("file", file)
+      const { photoUrl: url } = await apiPostForm<{ photoUrl: string }>("/api/tgapp/photo", form)
+      setPhotoUrl(url)
+    } catch {
+      // photo is optional
+    } finally {
+      setPhotoLoading(false)
+    }
+  }
+
   function handleScan() {
     const tg = window.Telegram?.WebApp
     if (tg?.showScanQrPopup) {
@@ -106,6 +123,18 @@ export function WorkerCheckinScreen({ auth, onProfile, onHistory }: { auth: Auth
 
   return (
     <div style={S.root}>
+      <input
+        type="file"
+        accept="image/*"
+        capture="user"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        onChange={e => {
+          const file = e.target.files?.[0]
+          if (file) handlePhotoUpload(file)
+          e.target.value = ""
+        }}
+      />
       <div style={S.header}>
         <div style={S.label}>{T("app_name")}</div>
         <div style={S.name}>{firstName}</div>
@@ -120,6 +149,21 @@ export function WorkerCheckinScreen({ auth, onProfile, onHistory }: { auth: Auth
         {state === "idle" && (
           <>
             <div style={S.hint}>{T("scan_qr_hint")}</div>
+            {!photoUrl && (
+              <button
+                style={{ ...S.btn(photoLoading), backgroundColor: "#fff", color: "#000", border: "2px solid #000" }}
+                onClick={() => fileInputRef.current?.click()}
+                disabled={photoLoading}
+              >
+                {photoLoading ? T("photo_uploading") : T("photo_btn")}
+              </button>
+            )}
+            {photoUrl && (
+              <div style={{ width: "80px", height: "80px", border: "2px solid #000", overflow: "hidden", margin: "0 auto" }}>
+                <img src={photoUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+            )}
+            <div style={{ fontSize: "11px", color: "#999", textAlign: "center" as const }}>{T("photo_hint")}</div>
             <button style={S.btn(loading)} onClick={handleScan} disabled={loading}>
               {loading ? T("checking_in") : T("checkin_btn")}
             </button>
@@ -146,6 +190,11 @@ export function WorkerCheckinScreen({ auth, onProfile, onHistory }: { auth: Auth
             <div style={S.bigText}>{T("worked_hours")}</div>
             <div style={{ fontSize: "32px", fontWeight: 900, marginBottom: "6px" }}>{hours}ч</div>
             <div style={S.sub}>{today}</div>
+            {photoUrl && (
+              <div style={{ width: "64px", height: "64px", border: "2px solid #000", overflow: "hidden", margin: "12px auto 0" }}>
+                <img src={photoUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+            )}
           </div>
         )}
 

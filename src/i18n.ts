@@ -59,6 +59,9 @@ const translations: Record<string, Record<string, string>> = {
     step_3: "Прораб и бухгалтер видят всё автоматически",
     scan_qr_btn: "Сканировать QR-код",
     scan_qr_hint: "Наведите камеру на QR-код на входе в объект",
+    photo_btn: "Сфотографироваться",
+    photo_uploading: "Загрузка фото...",
+    photo_hint: "Фото подтверждает присутствие",
   },
   uz: {
     register_title: "Ishchini ro'yxatdan o'tkazish",
@@ -116,6 +119,9 @@ const translations: Record<string, Record<string, string>> = {
     step_3: "Usta va buxgalter hamma narsani avtomatik ko'radi",
     scan_qr_btn: "QR-kodni skanerlash",
     scan_qr_hint: "Kamerani obyektga kirish joyidagi QR-kodga yo'naltiring",
+    photo_btn: "Suratga olish",
+    photo_uploading: "Rasm yuklanmoqda...",
+    photo_hint: "Rasm hozirligingizni tasdiqlaydi",
   },
   tg: {
     register_title: "Сабти номи корга",
@@ -173,6 +179,9 @@ const translations: Record<string, Record<string, string>> = {
     step_3: "Сармутахассис ва ҳисобдор ҳамаро мебинанд",
     scan_qr_btn: "Сканери QR-код",
     scan_qr_hint: "Камераро ба QR-коди даромадгоҳи объект нишон диҳед",
+    photo_btn: "Акс гирифтан",
+    photo_uploading: "Боргузории акс...",
+    photo_hint: "Акс ҳузури шуморо тасдиқ мекунад",
   },
   kz: {
     register_title: "Жұмысшыны тіркеу",
@@ -230,6 +239,9 @@ const translations: Record<string, Record<string, string>> = {
     step_3: "Прораб пен бухгалтер бәрін автоматты көреді",
     scan_qr_btn: "QR-кодты сканерлеу",
     scan_qr_hint: "Камераны объектіге кіру жеріндегі QR-кодқа бағыттаңыз",
+    photo_btn: "Фотосурет түсіру",
+    photo_uploading: "Фото жүктелуде...",
+    photo_hint: "Фото сіздің болуыңызды растайды",
   },
   kg: {
     register_title: "Жумушчуну каттоо",
@@ -287,6 +299,9 @@ const translations: Record<string, Record<string, string>> = {
     step_3: "Прораб жана бухгалтер баарын автоматтык көрөт",
     scan_qr_btn: "QR-кодду сканерлөө",
     scan_qr_hint: "Камераны объектке кирүү жеринде QR-кодуна багыттаңыз",
+    photo_btn: "Сүрөт тартуу",
+    photo_uploading: "Сүрөт жүктөлүүдө...",
+    photo_hint: "Сүрөт катышуңузду тастыктайт",
   },
   az: {
     register_title: "İşçinin qeydiyyatı",
@@ -344,6 +359,9 @@ const translations: Record<string, Record<string, string>> = {
     step_3: "Ustad və mühasib hər şeyi avtomatik görür",
     scan_qr_btn: "QR-kodu skan et",
     scan_qr_hint: "Kameranı obyektin girişindəki QR-koduna yönəlt",
+    photo_btn: "Şəkil çəkdirmək",
+    photo_uploading: "Şəkil yüklənir...",
+    photo_hint: "Şəkil iştirakınızı təsdiqləyir",
   },
 }
 
