@@ -27,7 +27,7 @@ export function WorkerRegisterScreen({ onRegistered }: Props) {
   useEffect(() => {
     apiGet<{ organizations: Organization[] }>("/api/tgapp/organizations")
       .then(d => setOrgs(d.organizations))
-      .catch(() => setError(T("orgs_error")))
+      .catch(() => {/* orgs unavailable — field is optional, continue silently */})
       .finally(() => setOrgsLoading(false))
   }, [])
 
