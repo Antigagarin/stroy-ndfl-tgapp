@@ -30,7 +30,7 @@ export interface WorkerInfo {
   id: string
   fullName: string
   status: WorkerStatus
-  organizationId: string
+  organizationId: string | null
   patentWarning?: "EXPIRED" | "EXPIRING_SOON" | null
 }
 

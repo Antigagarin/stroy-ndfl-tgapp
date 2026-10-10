@@ -36,7 +36,6 @@ export function WorkerRegisterScreen({ onRegistered }: Props) {
 
   async function handleSubmit() {
     if (!fullName.trim()) { setError(T("full_name") + " " + T("required")); return }
-    if (!orgId) { setError(T("organization") + " " + T("required")); return }
     if (showPatent && !patentExpiry) { setError(T("patent_expiry") + " " + T("required")); return }
     setLoading(true)
     setError("")
@@ -162,7 +161,7 @@ export function WorkerRegisterScreen({ onRegistered }: Props) {
         )}
 
         <div className="px-3 py-3">
-          <div className="text-xs font-bold uppercase text-gray-500 mb-1">{T("organization")} *</div>
+          <div className="text-xs font-bold uppercase text-gray-500 mb-1">{T("organization")} ({T("optional")})</div>
           {orgsLoading ? (
             <div className="text-sm text-gray-400">{T("loading_orgs")}</div>
           ) : (
