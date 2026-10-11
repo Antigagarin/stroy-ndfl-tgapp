@@ -18,6 +18,7 @@ export function ProfileScreen({ auth: _auth, onBack, onLogout, apiPrefix }: { au
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
   const [saved, setSaved] = useState(false)
+  const [confirmLogout, setConfirmLogout] = useState(false)
 
   const [fullName, setFullName] = useState("")
   const [birthDate, setBirthDate] = useState("")
@@ -122,16 +123,35 @@ export function ProfileScreen({ auth: _auth, onBack, onLogout, apiPrefix }: { au
         <button style={S.btn(saving)} onClick={handleSave} disabled={saving}>
           {saving ? "..." : T("save")}
         </button>
-        <button
-          style={{ width: "100%", padding: "14px", backgroundColor: "transparent", color: "#999", fontWeight: 700, fontSize: "13px", textTransform: "uppercase" as const, letterSpacing: "0.08em", border: "1px solid #ccc", cursor: "pointer" }}
-          onClick={async () => {
-            if (!confirm("Выйти из аккаунта? Вы сможете зарегистрироваться заново.")) return
-            try { await apiPost(`${apiPrefix}/logout`, {}) } catch {}
-            onLogout()
-          }}
-        >
-          Выйти из аккаунта
-        </button>
+        {!confirmLogout ? (
+          <button
+            style={{ width: "100%", padding: "14px", backgroundColor: "transparent", color: "#999", fontWeight: 700, fontSize: "13px", textTransform: "uppercase" as const, letterSpacing: "0.08em", border: "1px solid #ccc", cursor: "pointer" }}
+            onClick={() => setConfirmLogout(true)}
+          >
+            Выйти из аккаунта
+          </button>
+        ) : (
+          <div style={{ border: "2px solid #000", padding: "16px", backgroundColor: "#fff" }}>
+            <div style={{ fontSize: "13px", fontWeight: 700, marginBottom: "12px" }}>Выйти из аккаунта?</div>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button
+                style={{ flex: 1, padding: "12px", backgroundColor: "#000", color: "#fff", fontWeight: 700, fontSize: "13px", border: "none", cursor: "pointer" }}
+                onClick={async () => {
+                  try { await apiPost(`${apiPrefix}/logout`, {}) } catch {}
+                  onLogout()
+                }}
+              >
+                Да, выйти
+              </button>
+              <button
+                style={{ flex: 1, padding: "12px", backgroundColor: "#fff", color: "#000", fontWeight: 700, fontSize: "13px", border: "2px solid #000", cursor: "pointer" }}
+                onClick={() => setConfirmLogout(false)}
+              >
+                Отмена
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
