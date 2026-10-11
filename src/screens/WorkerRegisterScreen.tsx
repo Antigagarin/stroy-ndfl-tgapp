@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react"
-import { apiPost, apiGet } from "../api"
+import { useState } from "react"
+import { apiPost } from "../api"
 import { useT } from "../i18n"
-import type { AuthResult, Organization } from "../types"
+import type { AuthResult } from "../types"
 
 interface Props {
   onRegistered: (auth: AuthResult) => void
@@ -11,7 +11,6 @@ type TaxStatus = "RF_RESIDENT" | "EAEU_CITIZEN" | "PATENT" | "NONRESIDENT"
 
 export function WorkerRegisterScreen({ onRegistered }: Props) {
   const T = useT()
-  const [orgs, setOrgs] = useState<Organization[]>([])
   const [fullName, setFullName] = useState("")
   const [birthDate, setBirthDate] = useState("")
   const [taxStatus, setTaxStatus] = useState<TaxStatus>("RF_RESIDENT")
@@ -19,17 +18,8 @@ export function WorkerRegisterScreen({ onRegistered }: Props) {
   const [snils, setSnils] = useState("")
   const [patentNumber, setPatentNumber] = useState("")
   const [patentExpiry, setPatentExpiry] = useState("")
-  const [orgId, setOrgId] = useState("")
   const [loading, setLoading] = useState(false)
-  const [orgsLoading, setOrgsLoading] = useState(true)
   const [error, setError] = useState("")
-
-  useEffect(() => {
-    apiGet<{ organizations: Organization[] }>("/api/tgapp/organizations")
-      .then(d => setOrgs(d.organizations))
-      .catch(() => {/* orgs unavailable — field is optional, continue silently */})
-      .finally(() => setOrgsLoading(false))
-  }, [])
 
   const showInn = taxStatus === "RF_RESIDENT" || taxStatus === "EAEU_CITIZEN" || taxStatus === "PATENT"
   const showPatent = taxStatus === "PATENT"
@@ -50,7 +40,6 @@ export function WorkerRegisterScreen({ onRegistered }: Props) {
           snils: snils.trim() || null,
           patentNumber: patentNumber.trim() || null,
           patentExpiry: patentExpiry || null,
-          organizationId: orgId,
         }
       )
       onRegistered({ role: "worker", id: worker.id, fullName: worker.fullName, status: "APPROVED" })
@@ -149,7 +138,7 @@ export function WorkerRegisterScreen({ onRegistered }: Props) {
         )}
 
         {showPatent && (
-          <div className="border-b border-black px-3 py-3">
+          <div className="px-3 py-3">
             <div className="text-xs font-bold uppercase text-gray-500 mb-1">{T("patent_expiry")} *</div>
             <input
               type="date"
@@ -160,23 +149,6 @@ export function WorkerRegisterScreen({ onRegistered }: Props) {
           </div>
         )}
 
-        <div className="px-3 py-3">
-          <div className="text-xs font-bold uppercase text-gray-500 mb-1">{T("organization")} ({T("optional")})</div>
-          {orgsLoading ? (
-            <div className="text-sm text-gray-400">{T("loading_orgs")}</div>
-          ) : (
-            <select
-              className="w-full text-base font-medium outline-none bg-transparent"
-              value={orgId}
-              onChange={e => setOrgId(e.target.value)}
-            >
-              <option value="">{T("choose_org")}</option>
-              {orgs.map(o => (
-                <option key={o.id} value={o.id}>{o.siteName} — {o.name}</option>
-              ))}
-            </select>
-          )}
-        </div>
       </div>
 
       {error && (
@@ -186,7 +158,7 @@ export function WorkerRegisterScreen({ onRegistered }: Props) {
       <div className="px-4 mt-4">
         <button
           onClick={handleSubmit}
-          disabled={loading || orgsLoading}
+          disabled={loading}
           className="w-full py-4 bg-black text-white font-black text-base uppercase tracking-wider disabled:opacity-40"
         >
           {loading ? T("registering") : T("register_btn")}
