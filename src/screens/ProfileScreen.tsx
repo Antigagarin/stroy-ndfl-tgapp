@@ -125,7 +125,7 @@ export function ProfileScreen({ auth: _auth, onBack, onLogout, apiPrefix }: { au
         </button>
         {!confirmLogout ? (
           <button
-            style={{ width: "100%", padding: "14px", backgroundColor: "transparent", color: "#999", fontWeight: 700, fontSize: "13px", textTransform: "uppercase" as const, letterSpacing: "0.08em", border: "1px solid #ccc", cursor: "pointer" }}
+            style={{ width: "100%", padding: "14px", backgroundColor: "#f3f4f6", color: "#666", fontWeight: 700, fontSize: "13px", textTransform: "uppercase" as const, letterSpacing: "0.08em", border: "1px solid #ccc", cursor: "pointer", touchAction: "manipulation", WebkitTapHighlightColor: "transparent" } as React.CSSProperties}
             onClick={() => setConfirmLogout(true)}
           >
             Выйти из аккаунта
