@@ -6,7 +6,7 @@ import type { AuthResult } from "../types"
 interface WorkerProfile {
   id: string; fullName: string; birthDate: string | null; taxStatus: string
   inn: string | null; snils: string | null; patentNumber: string | null; patentExpiry: string | null
-  organization: { name: string; siteName: string }
+  organization: { name: string; siteName: string } | null
 }
 
 type TaxStatus = "RF_RESIDENT" | "EAEU_CITIZEN" | "PATENT" | "NONRESIDENT"
@@ -88,7 +88,7 @@ export function ProfileScreen({ auth: _auth, onBack, onLogout, apiPrefix }: { au
         <button style={S.back} onClick={onBack}>← {T("back")}</button>
         <div style={S.label}>{T("app_name")}</div>
         <div style={S.title}>{T("profile_btn")}</div>
-        {profile && <div style={{ fontSize: "13px", color: "#aaa", marginTop: "4px" }}>{profile.organization.siteName} — {profile.organization.name}</div>}
+        {profile?.organization && <div style={{ fontSize: "13px", color: "#aaa", marginTop: "4px" }}>{profile.organization.siteName} — {profile.organization.name}</div>}
       </div>
 
       <div style={S.card}>
