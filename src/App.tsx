@@ -21,9 +21,13 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>("main")
 
   useEffect(() => {
+    const timeout = setTimeout(() => {
+      setAuth({ role: "unknown", id: "" })
+      setLoading(false)
+    }, 10000)
     apiPost<AuthResult>("/api/tgapp/auth", {})
-      .then(data => { setAuth(data); setLoading(false) })
-      .catch(() => { setAuth({ role: "unknown", id: "" }); setLoading(false) })
+      .then(data => { clearTimeout(timeout); setAuth(data); setLoading(false) })
+      .catch(() => { clearTimeout(timeout); setAuth({ role: "unknown", id: "" }); setLoading(false) })
   }, [])
 
   const renderScreen = () => {
