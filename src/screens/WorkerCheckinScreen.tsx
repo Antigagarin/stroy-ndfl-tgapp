@@ -1,9 +1,138 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
+import jsQR from "jsqr"
 import { apiPost, apiPostForm } from "../api"
 import type { AuthResult } from "../types"
 import { useT } from "../i18n"
 
 type CheckinState = "idle" | "checked_in" | "checked_out"
+
+function QrScanner({ onScan, onClose }: { onScan: (text: string) => void; onClose: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const streamRef = useRef<MediaStream | null>(null)
+  const rafRef = useRef<number>(0)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [facingMode, setFacingMode] = useState<"environment" | "user">("environment")
+  const [camError, setCamError] = useState("")
+
+  const startCamera = useCallback(async (mode: "environment" | "user") => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(t => t.stop())
+    }
+    cancelAnimationFrame(rafRef.current)
+    setCamError("")
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: mode } },
+      })
+      streamRef.current = stream
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream
+        videoRef.current.play()
+      }
+    } catch {
+      setCamError("Камера недоступна")
+    }
+  }, [])
+
+  useEffect(() => {
+    startCamera(facingMode)
+    return () => {
+      streamRef.current?.getTracks().forEach(t => t.stop())
+      cancelAnimationFrame(rafRef.current)
+    }
+  }, [facingMode, startCamera])
+
+  function tick() {
+    const video = videoRef.current
+    const canvas = canvasRef.current
+    if (!video || !canvas || video.readyState < 2) { rafRef.current = requestAnimationFrame(tick); return }
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+    const ctx = canvas.getContext("2d")!
+    ctx.drawImage(video, 0, 0)
+    const img = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    const code = jsQR(img.data, img.width, img.height)
+    if (code?.data) { onScan(code.data); return }
+    rafRef.current = requestAnimationFrame(tick)
+  }
+
+  function handleVideoPlay() {
+    cancelAnimationFrame(rafRef.current)
+    rafRef.current = requestAnimationFrame(tick)
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = ev => {
+      const img = new Image()
+      img.onload = () => {
+        const canvas = document.createElement("canvas")
+        canvas.width = img.width
+        canvas.height = img.height
+        const ctx = canvas.getContext("2d")!
+        ctx.drawImage(img, 0, 0)
+        const imageData = ctx.getImageData(0, 0, img.width, img.height)
+        const code = jsQR(imageData.data, imageData.width, imageData.height)
+        if (code?.data) onScan(code.data)
+        else setCamError("QR-код не найден в файле")
+      }
+      img.src = ev.target?.result as string
+    }
+    reader.readAsDataURL(file)
+    e.target.value = ""
+  }
+
+  return (
+    <div style={{ position: "fixed", inset: 0, backgroundColor: "#000", zIndex: 100, display: "flex", flexDirection: "column" }}>
+      <div style={{ position: "relative", flex: 1, overflow: "hidden" }}>
+        <video
+          ref={videoRef}
+          playsInline
+          muted
+          onPlay={handleVideoPlay}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+        <canvas ref={canvasRef} style={{ display: "none" }} />
+        {/* viewfinder */}
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
+          <div style={{ width: 220, height: 220, border: "3px solid #fff", borderRadius: 4, boxShadow: "0 0 0 9999px rgba(0,0,0,0.5)" }} />
+        </div>
+      </div>
+
+      {camError && (
+        <div style={{ color: "#f00", textAlign: "center", padding: "8px", fontSize: 13 }}>{camError}</div>
+      )}
+
+      <div style={{ backgroundColor: "#111", padding: "16px 20px", display: "flex", gap: 10, flexDirection: "column" }}>
+        <div style={{ display: "flex", gap: 10 }}>
+          <button
+            onClick={() => setFacingMode(m => m === "environment" ? "user" : "environment")}
+            style={{ flex: 1, padding: "14px", backgroundColor: "#333", color: "#fff", border: "none", fontSize: 13, fontWeight: 700, cursor: "pointer" }}
+          >
+            {facingMode === "environment" ? "⇄ Передняя камера" : "⇄ Задняя камера"}
+          </button>
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            style={{ flex: 1, padding: "14px", backgroundColor: "#333", color: "#fff", border: "none", fontSize: 13, fontWeight: 700, cursor: "pointer" }}
+          >
+            📁 Из файла
+          </button>
+        </div>
+        <button
+          onClick={onClose}
+          style={{ padding: "14px", backgroundColor: "#000", color: "#aaa", border: "1px solid #444", fontSize: 13, cursor: "pointer" }}
+        >
+          Отмена
+        </button>
+      </div>
+
+      <input ref={fileInputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleFileChange} />
+    </div>
+  )
+}
 
 export function WorkerCheckinScreen({ auth, onProfile, onHistory }: { auth: AuthResult; onProfile: () => void; onHistory: () => void }) {
   const T = useT()
@@ -15,6 +144,7 @@ export function WorkerCheckinScreen({ auth, onProfile, onHistory }: { auth: Auth
   const [error, setError] = useState("")
   const [photoUrl, setPhotoUrl] = useState<string | null>(null)
   const [photoLoading, setPhotoLoading] = useState(false)
+  const [showScanner, setShowScanner] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -47,6 +177,7 @@ export function WorkerCheckinScreen({ auth, onProfile, onHistory }: { auth: Auth
   }, [state, checkInTime])
 
   async function doScan(qrText: string) {
+    setShowScanner(false)
     setLoading(true)
     setError("")
     try {
@@ -91,16 +222,7 @@ export function WorkerCheckinScreen({ auth, onProfile, onHistory }: { auth: Auth
   }
 
   function handleScan() {
-    const tg = window.Telegram?.WebApp
-    if (tg?.showScanQrPopup) {
-      tg.showScanQrPopup({ text: T("scan_qr_hint") }, (text: string) => {
-        tg.closeScanQrPopup()
-        doScan(text)
-        return true
-      })
-    } else {
-      doScan("dev")
-    }
+    setShowScanner(true)
   }
 
   const S = {
@@ -123,6 +245,10 @@ export function WorkerCheckinScreen({ auth, onProfile, onHistory }: { auth: Auth
 
   return (
     <div style={S.root}>
+      {showScanner && (
+        <QrScanner onScan={doScan} onClose={() => setShowScanner(false)} />
+      )}
+
       <input
         type="file"
         accept="image/*"
