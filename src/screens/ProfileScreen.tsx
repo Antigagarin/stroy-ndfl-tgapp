@@ -11,7 +11,7 @@ interface WorkerProfile {
 
 type TaxStatus = "RF_RESIDENT" | "EAEU_CITIZEN" | "PATENT" | "NONRESIDENT"
 
-export function ProfileScreen({ auth: _auth, onBack, apiPrefix }: { auth: AuthResult; onBack: () => void; apiPrefix: string }) {
+export function ProfileScreen({ auth: _auth, onBack, onLogout, apiPrefix }: { auth: AuthResult; onBack: () => void; onLogout: () => void; apiPrefix: string }) {
   const T = useT()
   const [profile, setProfile] = useState<WorkerProfile | null>(null)
   const [loading, setLoading] = useState(true)
@@ -118,9 +118,19 @@ export function ProfileScreen({ auth: _auth, onBack, apiPrefix }: { auth: AuthRe
       {saved && <div style={S.success}>✓ {T("save")}</div>}
       {error && <div style={S.err}>{error}</div>}
 
-      <div style={{ padding: "0 16px" }}>
+      <div style={{ padding: "0 16px", display: "flex", flexDirection: "column", gap: "10px" }}>
         <button style={S.btn(saving)} onClick={handleSave} disabled={saving}>
           {saving ? "..." : T("save")}
+        </button>
+        <button
+          style={{ width: "100%", padding: "14px", backgroundColor: "transparent", color: "#999", fontWeight: 700, fontSize: "13px", textTransform: "uppercase" as const, letterSpacing: "0.08em", border: "1px solid #ccc", cursor: "pointer" }}
+          onClick={async () => {
+            if (!confirm("Выйти из аккаунта? Вы сможете зарегистрироваться заново.")) return
+            try { await apiPost(`${apiPrefix}/logout`, {}) } catch {}
+            onLogout()
+          }}
+        >
+          Выйти из аккаунта
         </button>
       </div>
     </div>

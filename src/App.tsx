@@ -28,7 +28,7 @@ export default function App() {
 
   const renderScreen = () => {
     if (loading || !auth) return <LoadingScreen />
-    if (screen === "profile" && auth.role === "worker") return <ProfileScreen auth={auth} onBack={() => setScreen("main")} apiPrefix="/api/tgapp" />
+    if (screen === "profile" && auth.role === "worker") return <ProfileScreen auth={auth} onBack={() => setScreen("main")} onLogout={() => { setAuth({ role: "unknown", id: "" }); setScreen("main") }} apiPrefix="/api/tgapp" />
     if (screen === "history" && auth.role === "worker") return <AttendanceHistoryScreen auth={auth} onBack={() => setScreen("main")} apiPrefix="/api/tgapp" />
     if (auth.role === "unknown" && !showRegister) return <UnknownScreen onRegister={() => setShowRegister(true)} onConnect={a => { setAuth(a); setShowRegister(false) }} />
     if (auth.role === "unknown" || showRegister) return <WorkerRegisterScreen onRegistered={a => { setAuth(a); setShowRegister(false) }} />
