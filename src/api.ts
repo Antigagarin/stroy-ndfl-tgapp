@@ -4,6 +4,8 @@ function getInitData(): string {
   if (typeof window === "undefined") return ""
   return (
     window.Telegram?.WebApp?.initData ||
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).WebApp?.initData ||
     new URLSearchParams(window.location.search).get("initData") ||
     ""
   )
